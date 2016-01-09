@@ -8,4 +8,10 @@ def run():
     #os.system('ping www.baidu.com')
     os.system('ls')
     print 'running'
-run()
+#run()
+def test_if():
+	if i == 1:
+		print 'ok'
+	else:
+		print 'error'
+test_if()
