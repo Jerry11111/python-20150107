@@ -6,3 +6,8 @@ print type(filenames)
 print filenames
 for f in filenames:
     print f, type(f)
+def file_op():
+    url = 'http://www.baiu.com/a/b/c.gif'
+    name = os.path.basename(url)
+    print name
+file_op()

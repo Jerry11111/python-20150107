@@ -15,3 +15,7 @@ def test_if():
 	else:
 		print 'error'
 test_if()
+def type_test():
+    str1 = b'str1'
+    print str1, type(str1)
+type_test()
