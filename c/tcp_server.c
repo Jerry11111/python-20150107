@@ -29,7 +29,7 @@ int main(int argc,char **argv)
 {
     struct sockaddr_in sin;     //服务器通信地址结构
     struct sockaddr_in cin;     //保存客户端通信地址结构
-    int l_fd;
+    int socket_fd;
     int c_fd;
     socklen_t len;
     char buf[MAX_LINE];     //存储传送内容的缓冲区
@@ -41,15 +41,15 @@ int main(int argc,char **argv)
     sin.sin_addr.s_addr = INADDR_ANY;   //服务器可以接受任意地址
     sin.sin_port = htons(port); //端口转换为网络字节序
      
-    l_fd = socket(AF_INET,SOCK_STREAM,0);   //创建套接子,使用TCP协议
-    bind(l_fd,(struct sockaddr *)&sin,sizeof(sin));
+    socket_fd = socket(AF_INET,SOCK_STREAM,0);   //创建套接子,使用TCP协议
+    bind(socket_fd,(struct sockaddr *)&sin,sizeof(sin));
      
-    listen(l_fd,10);    //开始监听连接
+    listen(socket_fd,10);    //开始监听连接
      
     printf("waiting ....\n");
     while(1)
     {
-        c_fd = accept(l_fd,(struct sockaddr *)&cin,&len);
+        c_fd = accept(socket_fd,(struct sockaddr *)&cin,&len);
          
         n = read(c_fd,buf,MAX_LINE);    //读取客户端发送来的信息
         inet_ntop(AF_INET,&cin.sin_addr,addr_p,INET_ADDR_STR);      //将客户端传来地址转化为字符串
@@ -61,7 +61,7 @@ int main(int argc,char **argv)
         close(c_fd);
     }
     printf("buf = %s\n",buf);
-    if((close(l_fd)) == -1)
+    if((close(socket_fd)) == -1)
     {
         perror("fail to close\n");
         exit(1);
