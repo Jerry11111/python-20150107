@@ -10,6 +10,8 @@
 //#define ETH_P_IP "127.0.0.1"
 int main(int argc, char** argv)
 {
+while(1)
+{
 	/*创建接受Raw Socket*/
 //int recvsd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_IP));
 int recvsd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
@@ -36,4 +38,6 @@ if((n = recvfrom(recvsd, buffer, 2048, 0, NULL, NULL)) < 42){
                          p[4]&0XFF,p[5]&0XFF,p[6]&0XFF,p[7]&0XFF);
      // }
 }	
+sleep(1);//等待一秒 
+}
 }
