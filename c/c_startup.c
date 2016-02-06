@@ -2,6 +2,12 @@
 struct foo {
     int a, b;
 };
+struct stu1
+{
+  int i;
+  char c;
+  int j;
+};
 void test_type()
 {
     int i =2;
@@ -13,6 +19,8 @@ void test_type()
 	char c = 'a';
 	int csize = sizeof(c);
    	printf("sizeof(char)=%d\n", csize);// 1
+    int stsize = sizeof(struct stu1);
+   	printf("sizeof(stu1)=%d\n", stsize);// 1
 }
 /**
 	typedef给已知的数据类型重命名
@@ -34,9 +42,9 @@ void test_pointer()
 int main(int argc, char **argv)
 {
 	printf("Hello World!\n");
-//	test_type();
+	test_type();
 	//test_typedef();
-    test_pointer();
+    //test_pointer();
 	return 0;
 }
 
