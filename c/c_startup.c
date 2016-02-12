@@ -39,10 +39,22 @@ void test_pointer()
     printf("%p\n", (struct foo *)x + 4);
     printf("%p\n", (struct foo *)(x + 4));
 }
+void test_variable()
+{
+   char chs[6] = "abcd";
+   printf("chs = %s\n", chs);
+   char *chsp = (char *)&chs[0];
+   //chsp = "12345";
+   //chs[0] = '1';
+   chsp = NULL;
+   printf("chs = %s\n", chs);
+   printf("chsp = %s\n", chsp);
+}
 int main(int argc, char **argv)
 {
 	printf("Hello World!\n");
-	test_type();
+       //	test_type();
+       test_variable();
 	//test_typedef();
     //test_pointer();
 	return 0;
