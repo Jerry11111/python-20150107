@@ -160,7 +160,7 @@ void parseUDP(char *buf)
    int d = sizeof(struct udphdr);
    printf("\n d: %hu" , d);
    printf("\n data: %s" , data);
-   if( ntohs(udp_hdr->dest) == 53 ){
+   if( ntohs(udp_hdr->dest) == 53 || ntohs(udp_hdr->source) == 53 ){
 	  parseDNS(buf);
    }
 
@@ -180,6 +180,14 @@ struct dns_query
     unsigned short type;
     unsigned short class; 
 };
+struct dns_answer
+{
+	unsigned short name;
+	unsigned short type;
+	unsigned short class;
+	unsigned short ttl;
+	unsigned short length;
+}
 void parseDNS(char *buf)
 {
      char *data = (char*)(buf +sizeof(struct ether_header) + sizeof(struct ip) + sizeof(struct udphdr));
@@ -192,6 +200,25 @@ void parseDNS(char *buf)
      printf("\n addition: %u" , ntohs(dns_hdr->addition));
      char * addr = (char *) (data + 12);
      int i = 0;
+	 char ad[1024] = "";
+	 int index = 0;
+	 int ad_index = 0;
+	 while(*(addr + index) != '\0'){
+		char count = *(addr + index);
+		index++;
+		int j = 0;
+		 for(; j < count; j++){
+			ad[ad_index]= *(addr + index );
+			index++;
+			ad_index++;
+		 }
+		 ad[ad_index] = '.';
+			ad_index++;
+		
+	 }
+	 ad_index--;
+	 ad[ad_index]='\0';
+     printf("\n ad: %s" , ad);
      while(*(addr + i) != '\0'){
          i++;
      }
