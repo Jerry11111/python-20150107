@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include<malloc.h>
+#include <string.h>
 
 
 
@@ -41,6 +43,30 @@ void append3(char *a, char *b, int start, int len)
     }
 	*a = '\0';
 }
+// 打印指定len的字符串
+void _printf(char *ch, int len)
+{
+	char *a = malloc(len+1);
+	bzero(a, sizeof(a));
+	char *b = a;
+	int j = 0;
+	for(;j < len; j++){
+		*b++ = *ch++; 
+	}
+	printf("%s\n", a);
+	free(a);
+}
+
+void test_printf()
+{
+	char ch[] = "abcdefg";
+	printf("%s\n", ch);
+	_printf(ch, 1);
+	printf("%s\n", ch);
+}
+
+
+
 
 void test_append()
 {
@@ -73,5 +99,5 @@ void test_append3()
 }
 int main(int argc, char **argv)
 {
-	test_append3();
+	test_printf();
 }

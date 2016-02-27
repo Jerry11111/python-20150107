@@ -12,7 +12,7 @@ int main(int argc,char **argv)
     char buf[MAX_LINE];
     int sfd;
     int port = 8000;
-    char *str = "test string";
+    char *str = "teststring";
     char *serverIP = "127.0.0.1";
     if(argc > 1)
     {
