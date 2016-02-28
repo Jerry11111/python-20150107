@@ -113,10 +113,28 @@ void test_write_file()
 	int r = write_file(path, content, sizeof(content)); 
 	printf("r=%d, content=%s\n", r, content);
 }
+void test_lseek()
+{
+	int fd;  
+    char buf1[] = "abcdefghij";  
+    char buf2[] = "ABCDEFGHIJ"; 
+    if((fd = creat("file.hole",O_CREAT|O_RDWR)) < 0)  
+        perror("creat error\n");  
+    if(write(fd,buf1,10) != 10)  
+        perror("buf1 write error\n");  
+    if(lseek(fd,16384,SEEK_SET) == -1)  
+        perror("lseek error\n");  
+    if(write(fd,buf2,10) != 10)  
+        perror("write buf2 error\n");  
+      
+    if(fd)  
+        close(fd);  
+}
 int main(int argc, char **argv)
 {
 	//read_file2();
 	//test_read_file_as_string();
-	test_write_file();
+//	test_write_file();
+	test_lseek();
 }
 
