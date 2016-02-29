@@ -97,7 +97,19 @@ void test_append3()
     append3(a, b, 0,3);
 	printf("a=%s, b=%s, c=%s\n", a, b, c);
 }
+// strncpy复制n个字符到dest中
+void test_strncpy()
+{
+	char *src = "abc";
+	char dest[100];
+	bzero(dest, sizeof(dest));
+	strncpy(dest, src, 4);
+	printf("dest=%s\n", dest);
+	char *src2="def";
+	strncpy(dest, src2, 4);
+	printf("dest=%s\n", dest);
+}
 int main(int argc, char **argv)
 {
-	test_printf();
+	test_strncpy();
 }
