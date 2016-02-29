@@ -130,11 +130,103 @@ void test_lseek()
     if(fd)  
         close(fd);  
 }
+// 向文件中写入空,生成空洞文件
+void test_lseek2()
+{
+	int fd;  
+    char buf1[100] = "";  
+	//bzero(buf1,sizeof(buf1)); 
+    if((fd = open("h",O_CREAT|O_RDWR)) < 0)  
+        perror("open error\n");  
+    if(write(fd,buf1,sizeof(buf1)) > 0)  
+        perror("buf1 write error\n");  
+}
+void test_open()
+{
+	int fd;  
+    char buf1[100] = "";  
+	//bzero(buf1,sizeof(buf1)); 
+	// 指定属主队文件的操作权限,默认为只读权限
+    if((fd = open("open_file.txt",O_CREAT|O_RDWR, S_IRUSR | S_IWUSR | S_IXUSR)) < 0)  
+        perror("open error\n");  
+}
+void test_fcntl()
+{
+	int fd = -1;
+	char path[]= "ip.txt";
+	if((fd = open(path, O_CREAT|O_RDWR|O_APPEND)) == -1)
+	{
+		perror("open error");
+		exit(1);
+	}
+	int val = -1;
+	if((val = fcntl(fd, F_GETFL, 0)) < 0)
+	{
+		perror("fcntl error");
+	}
+	printf("fd=%d, val=%d\n", fd, val);
+	// 文件的访问模式
+	switch(val & O_ACCMODE)
+	{
+		case O_RDONLY:
+			printf("read only");
+			break;
+		case O_WRONLY:
+			printf("write only");
+			break;
+		case O_RDWR:
+			printf("read write");
+			break;
+		default:
+			printf("unknown access mode");
+	}
+	if(val & O_APPEND)
+	{
+		printf(", append");
+	}
+}
+// dup复制文件描述,两个文件描述符的信息完全相同
+void test_dup()
+{
+	int fd = -1;
+	char path[]="ip.txt";
+	if(( fd = open(path, O_RDWR)) == -1)
+	{
+		perror("open error");
+		exit(1);
+	}
+	int cp_fd = -1;
+	cp_fd = dup(fd);
+	printf("fd=%d, cp_fd=%d\n", fd, cp_fd);
+	char buf1[] = "hello ";
+    char buf2[] = "world!";
+ 
+    //往fd文件写入内容
+    if (write(fd, buf1, 6) != 6) {
+        perror("write error!");
+    }
+ 
+    //打印出fd和copyfd的偏移量，经过上面的写操作，都变成6了
+    printf("fd.cur=%d\n", (int)lseek(fd, 0, SEEK_CUR));
+    printf("cp_fd.cur=%d\n", (int)lseek(cp_fd, 0, SEEK_CUR));
+ 
+    //往copyfd写入内容
+    if (write(cp_fd, buf2, 6) != 6) {
+        perror("write error!");
+    }
+	char buf3[100]="";
+	if(read(fd, buf3, sizeof(buf3)) == -1)
+	{
+		perror("read error");
+	}
+	printf("buf3=%s\n", buf3);
+}
 int main(int argc, char **argv)
 {
 	//read_file2();
 	//test_read_file_as_string();
 //	test_write_file();
-	test_lseek();
+	test_open();
+	//test_dup();
 }
 
