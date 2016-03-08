@@ -220,13 +220,32 @@ void test_dup()
 		perror("read error");
 	}
 	printf("buf3=%s\n", buf3);
+void test_lseek2()
+{
+	if(lseek(STDIN_FILENO, 0, SEEK_CUR) == -1)
+	{
+		printf("can not seek\n");
+	}
+	else
+	{
+		printf("seek ok\n");
+	}
+	char buf[1000] = "";
+	// 从标准输入读取
+	if(read(STDIN_FILENO, buf, sizeof(buf)) == -1)
+	{
+		perror("read error");	
+		exit(1);
+	}
+	printf("buf=%s\n", buf);
 }
 int main(int argc, char **argv)
 {
 	//read_file2();
 	//test_read_file_as_string();
 //	test_write_file();
-	test_open();
+	//test_open();
 	//test_dup();
+	test_lseek2();
 }
 
