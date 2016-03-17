@@ -239,13 +239,28 @@ void test_lseek2()
 	}
 	printf("buf=%s\n", buf);
 }
+void copy_file()
+{
+	int  n;
+	char  buf[1024];
+	while ((n = read(STDIN_FILENO, buf, 1024)) > 0)
+	if (write(STDOUT_FILENO, buf, n) != n)
+	{
+		printf("write error");
+	}
+	if (n < 0)
+	{
+		printf("read error");	
+	}
+}
 int main(int argc, char **argv)
 {
 	//read_file2();
 	//test_read_file_as_string();
 //	test_write_file();
 	//test_open();
+	copy_file();
 	//test_dup();
-	test_lseek2();
+	//test_lseek2();
 }
 

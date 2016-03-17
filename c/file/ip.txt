@@ -1,4 +1,4 @@
-eth0      Link encap:Ethernet  HWaddr 00:0c:29:15:61:80  
+hello world!nk encap:Ethernet  HWaddr 00:0c:29:15:61:80  
           inet addr:192.168.157.139  Bcast:192.168.157.255  Mask:255.255.255.0
           inet6 addr: fe80::20c:29ff:fe15:6180/64 Scope:Link
           UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
