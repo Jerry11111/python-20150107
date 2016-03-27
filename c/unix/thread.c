@@ -1,5 +1,7 @@
 #include "header.h"
 #include <pthread.h>
+#include <errno.h>
+#include<stdlib.h>
 void printids(const char *s)
 {
 	pid_t  pid;
@@ -55,8 +57,35 @@ void join_thread()
 		perror("can’t join with thread 2");
 	printf("thread 2 exit code %ld\n", (long)tret);
 }
+void thread_lock()
+{
+	extern int err;
+	struct timespec tout;
+	struct tm *tmp;
+	char buf[64];
+	pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+	pthread_mutex_lock(&lock);
+	printf("mutex is locked\n");
+	clock_gettime(CLOCK_REALTIME, &tout);
+	tmp = localtime(&tout.tv_sec);
+	strftime(buf, sizeof(buf), "%r", tmp);
+	printf("current time is %s\n", buf);
+	tout.tv_sec += 10; /* 10 seconds from now */
+	/* caution: this could lead to deadlock */
+	err = pthread_mutex_timedlock(&lock, &tout);
+	clock_gettime(CLOCK_REALTIME, &tout);
+	tmp = localtime(&tout.tv_sec);
+	strftime(buf, sizeof(buf), "%r", tmp);
+	printf("the time is now %s\n", buf);
+	//char *msg = strerror(err);
+	if (err == 0)
+		printf("mutex locked again!\n");
+	else
+		//printf("can’t lock mutex again: %s\n", msg);
+		printf("can’t lock mutex again: %d\n", err);
+}
 int main(int argc, char **argv)
 {
-	join_thread();
+	thread_lock();
 	return 0;
 }
