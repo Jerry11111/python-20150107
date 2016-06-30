@@ -1,4 +1,6 @@
 #include<stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
 void append(char *a, char *b, int start, int len)
 {
     while (*a != '\0') {   
