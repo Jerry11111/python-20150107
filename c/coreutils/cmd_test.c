@@ -1,10 +1,12 @@
 #include<stdio.h>
+#include<stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <string.h>
 int main(int argc, char **argv)
 {
 	int opt;
-	char *optstring = "abcdef";
+	char *optstring = "n";
 	printf("%d\n", argc);
 	int i = 0;
 	for(i = 0; i < argc; i++)
@@ -13,41 +15,55 @@ int main(int argc, char **argv)
 
 	}
 	int argind;
+	int number = 0;
 	while((opt = getopt(argc, argv, optstring)) != -1)
 	{
-		//switch(opt)
-		//{
-		//	case 'a':
-		//		
-		//}
+		switch(opt)
+		{
+			case 'n':
+				number = 1;
+				break;
+			default:
+				;
+				
+		}
 		printf("[%c] [%d] [%s]\n", opt, optind, argv[optind]);
 	}
 	argind = optind;
 	char *infile = argv[argind];
-	int infd;
-	if((infd = open(infile, O_RDONLY)) == -1)
+	FILE *infp;
+	char *line = NULL;
+	size_t linesize = 0;
+	size_t read = 0;
+	if((infp = fopen(infile, "r")) == NULL)
 	{
-		perror("open file error");	
+		perror("open file error");
+		exit(1);
 	}
-	size_t bufsize = 4096;
-	size_t len;
-	char buf[bufsize];
-	while(1)
+	size_t n= 0;
+	while((read = getline(&line, &linesize,infp)) != -1)
 	{
-		if(( len = read(infd, buf, bufsize)) < 0)
+		if(number > 0)
 		{
-			perror("read error");
-			break;
+			//size_t newsize = strlen(line) + 10;
+			size_t newsize = strlen(line) ;
+			//printf("%zu\n", strlen(line));
+			char *newline = malloc(newsize);
+			//bzero(newline, newsize);
+			char tmp[10];
+			sprintf(tmp, "\t%zu  ", ++n);
+			//strcat(newline, tmp);
+			strcat(newline, line);
+			printf("%s%s", line, newline);
+			line = newline;
 		}
-		if(len == 0)
-		{
-			break;
-		}
-		if( write(1, buf, len) != len)
-		{
-			perror("write error");
-			break;
-		}
+		//if(fputs(line, stdout) < 0)
+		//{
+		//	perror("write error");
+		//	exit(1);
+		//}
+
 	}
+	fclose(infp);
 }
 
