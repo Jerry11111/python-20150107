@@ -4,7 +4,6 @@
 #include <fcntl.h>
 #include <string.h>
 #include "header.h"
-#include <dirent.h>
 void read_file()
 {
 	int fd = 0;
@@ -221,8 +220,7 @@ void test_dup()
 		perror("read error");
 	}
 	printf("buf3=%s\n", buf3);
-}
-void test_lseek3()
+void test_lseek2()
 {
 	if(lseek(STDIN_FILENO, 0, SEEK_CUR) == -1)
 	{
@@ -255,25 +253,14 @@ void copy_file()
 		printf("read error");	
 	}
 }
-// 目录操作
-void dir_test()
-{
-	DIR    *dir;
-    struct    dirent    *ptr;
-    dir = opendir("."); ///open the dir
-
-    while((ptr = readdir(dir)) != NULL) ///read the list of this dir
-    {
-       //printf("d_type:%d d_name: %s\n", ptr->d_type,ptr->d_name);
-       printf("%s  ", ptr->d_name);
-    }
-    printf("\n");
-    closedir(dir);	
-}
 int main(int argc, char **argv)
 {
+	//read_file2();
+	//test_read_file_as_string();
+//	test_write_file();
+	//test_open();
+	copy_file();
+	//test_dup();
 	//test_lseek2();
-	dir_test();
-	return 0;
 }
 
