@@ -23,6 +23,55 @@ void read_file()
 	}
 	printf("%s\n", buf);
 }
+int read_line(void)
+{
+    FILE * fp;
+    char * line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    fp = fopen("/etc/passwd", "r");
+    if (fp == NULL)
+        exit(EXIT_FAILURE);
+
+    while ((read = getline(&line, &len, fp)) != -1) {
+        printf("[%zu] [%s]", len, line);
+    }
+
+    fclose(fp);
+    if (line)
+        free(line);
+    exit(EXIT_SUCCESS);
+}
+void write_file()
+{
+    FILE * fp;
+    FILE * wfp;
+    char * line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    fp = fopen("/etc/passwd", "r");
+    wfp = fopen("passwd.txt", "wr");
+    if (fp == NULL)
+        exit(EXIT_FAILURE);
+    if (wfp == NULL)
+        exit(EXIT_FAILURE);
+
+    while ((read = getline(&line, &len, fp)) != -1) {
+        //printf("[%zu] [%s]", line);
+		if(fputs(line, wfp) < 0)
+		{
+			exit(EXIT_FAILURE);
+		}
+    }
+
+    fclose(fp);
+    fclose(wfp);
+    if (line)
+        free(line);
+    exit(EXIT_SUCCESS);
+}
 void test_rw_char()
 {
 	int  c;
@@ -58,9 +107,9 @@ void test_temp_file()
 	int MAXLINE = 1024;
 	char  name[MAXLINE], line[MAXLINE];
 	FILE  *fp;
-	printf("tmpnam(NULL)=>%s\n", tmpnam(NULL)); /* first temp name */
-	tmpnam(name);  /* second temp name */
-	printf("tmpnam(name)=>%s\n", name);
+	//printf("tmpnam(NULL)=>%s\n", tmpnam(NULL)); /* first temp name */
+	//tmpnam(name);  /* second temp name */
+	//printf("tmpnam(name)=>%s\n", name);
 	if ((fp = tmpfile()) == NULL) /* create temp file */
 	perror("tmpfile error");
 	fputs("one line of output\n", fp); /* write to temp file */
@@ -97,6 +146,6 @@ void test_temp_file()
 }
 int main(int argc, char **argv)
 {
-	read_file();
+	write_file();
 	return 0;
 }
