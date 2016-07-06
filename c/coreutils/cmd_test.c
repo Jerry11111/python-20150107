@@ -7,11 +7,11 @@ int main(int argc, char **argv)
 {
 	int opt;
 	char *optstring = "n";
-	printf("%d\n", argc);
+	//printf("%d\n", argc);
 	int i = 0;
 	for(i = 0; i < argc; i++)
 	{
-		printf("[%d] [%s]\n", i, argv[i]);
+	//	printf("[%d] [%s]\n", i, argv[i]);
 
 	}
 	int argind;
@@ -27,7 +27,7 @@ int main(int argc, char **argv)
 				;
 				
 		}
-		printf("[%c] [%d] [%s]\n", opt, optind, argv[optind]);
+		//printf("[%c] [%d] [%s]\n", opt, optind, argv[optind]);
 	}
 	argind = optind;
 	char *infile = argv[argind];
@@ -45,23 +45,20 @@ int main(int argc, char **argv)
 	{
 		if(number > 0)
 		{
-			//size_t newsize = strlen(line) + 10;
-			size_t newsize = strlen(line) ;
-			//printf("%zu\n", strlen(line));
+			size_t newsize = linesize + 10;
 			char *newline = malloc(newsize);
-			//bzero(newline, newsize);
+			bzero(newline, newsize);
 			char tmp[10];
-			sprintf(tmp, "\t%zu  ", ++n);
-			//strcat(newline, tmp);
+			sprintf(tmp, "\t%zu\t", ++n);
+			strcat(newline, tmp);
 			strcat(newline, line);
-			printf("%s%s", line, newline);
 			line = newline;
 		}
-		//if(fputs(line, stdout) < 0)
-		//{
-		//	perror("write error");
-		//	exit(1);
-		//}
+		if(fputs(line, stdout) < 0)
+		{
+			perror("write error");
+			exit(1);
+		}
 
 	}
 	fclose(infp);
