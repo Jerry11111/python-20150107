@@ -25,4 +25,5 @@ data={'id': 1, 'username': 'admin'}
 #data = do_post(url, data, headers)
 data = do_post(url, headers = headers)
 print (type(data))
+print (str(data, 'utf-8'))
 

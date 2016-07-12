@@ -46,5 +46,5 @@ def test_op():
 	
 #test_op()
 #list_op()
-#string_op()
-dictionary_op()
+string_op()
+#dictionary_op()
