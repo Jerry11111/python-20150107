@@ -1,4 +1,7 @@
 #include <stdio.h> 
+#include <string.h> 
+#include <sys/socket.h> 
+#include <netinet/in.h>
 // libevent头文件 
 #include <event.h> 
 // 定时事件回调函数 
@@ -11,8 +14,8 @@ void onTime(int sock, short event, void*arg)
     // 重新添加定时事件（定时事件触发后默认自动删除） 
     event_add((struct event*)arg, &tv); 
 } 
-int main(int argc, char **argv) 
-{ 
+void timer()
+{
     // 初始化 
     event_init(); 
     struct event evTime; 
@@ -25,5 +28,65 @@ int main(int argc, char **argv)
     event_add(&evTime, &tv); 
     // 事件循环 
     event_dispatch(); 
+}
+// 事件base 
+struct event_base* base; 
+// 读事件回调函数 
+void onRead(int iCliFd, short iEvent, void*arg) 
+{ 
+    int iLen; 
+    char buf[1500]; 
+    iLen = recv(iCliFd, buf, 1500, 0); 
+    if(iLen <= 0) { 
+        printf("Client Close\n"); 
+        // 连接结束(=0)或连接错误(<0)，将事件删除并释放内存空间 
+        struct event *pEvRead = (struct event*)arg; 
+        event_del(pEvRead); 
+        close(iCliFd); 
+        return; 
+    } 
+    buf[iLen] = 0; 
+    printf("Client Info:%s\n", buf);
+} 
+// 连接请求事件回调函数 
+void onAccept(int iSvrFd, short iEvent, void*arg) 
+{ 
+    int iCliFd; 
+    struct sockaddr_in sCliAddr; 
+    socklen_t iSinSize = sizeof(sCliAddr); 
+    iCliFd = accept(iSvrFd, (struct sockaddr*)&sCliAddr, &iSinSize); 
+    // 连接注册为新事件 (EV_PERSIST为事件触发后不默认删除) 
+    struct event *pEvRead; 
+    event_set(pEvRead, iCliFd, EV_READ|EV_PERSIST, onRead, pEvRead); 
+    event_base_set(base, pEvRead); 
+    event_add(pEvRead, NULL); 
+} 
+void tcp_server()
+{
+	int iSvrFd;   
+	struct sockaddr_in sSvrAddr; 
+	memset(&sSvrAddr, 0, sizeof(sSvrAddr));   
+	sSvrAddr.sin_family = AF_INET;   
+	sSvrAddr.sin_addr.s_addr = inet_addr("127.0.0.1");     
+	sSvrAddr.sin_port = htons(9999);    
+	// 创建tcpSocket（iSvrFd），监听本机8888端口   
+	iSvrFd = socket(AF_INET, SOCK_STREAM, 0);   
+	bind(iSvrFd, (struct sockaddr*)&sSvrAddr, sizeof(sSvrAddr));   
+	listen(iSvrFd, 10); 
+	// 初始化base 
+	base = event_base_new(); 
+	struct event evListen; 
+	// 设置事件 
+	event_set(&evListen, iSvrFd, EV_READ|EV_PERSIST, onAccept, NULL); 
+	// 设置为base事件 
+	event_base_set(base, &evListen); 
+	// 添加事件 
+	event_add(&evListen, NULL); 
+	// 事件循环 
+	event_base_dispatch(base); 	
+}
+int main(int argc, char **argv) 
+{ 
+	tcp_server();
     return 0; 
 }

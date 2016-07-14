@@ -11,7 +11,7 @@ int main(int argc,char **argv)
     struct sockaddr_in sin;     //服务器的地址
     char buf[MAX_LINE];
     int sfd;
-    int port = 8000;
+    int port = 9999;
     char *str = "teststring";
     char *serverIP = "127.0.0.1";
     if(argc > 1)
