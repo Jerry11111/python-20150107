@@ -36,12 +36,7 @@ void onRead(int iCliFd, short iEvent, void*arg)
 { 
     int iLen; 
     char buf[1500]; 
-	printf("onRead");
-    if((iLen = recv(iCliFd, buf, 1500, 0)) == -1)
-	{
-		perror("recv error");
-		return; 
-	}
+    iLen = recv(iCliFd, buf, 1500, 0); 
     if(iLen <= 0) { 
         printf("Client Close\n"); 
         // 连接结束(=0)或连接错误(<0)，将事件删除并释放内存空间 
@@ -57,14 +52,9 @@ void onRead(int iCliFd, short iEvent, void*arg)
 void onAccept(int iSvrFd, short iEvent, void*arg) 
 { 
     int iCliFd; 
-	printf("onAccept");
     struct sockaddr_in sCliAddr; 
     socklen_t iSinSize = sizeof(sCliAddr); 
-    if((iCliFd = accept(iSvrFd, (struct sockaddr*)&sCliAddr, &iSinSize)) == -1)
-	{
-		perror("accept error");
-		return; 
-	}
+    iCliFd = accept(iSvrFd, (struct sockaddr*)&sCliAddr, &iSinSize); 
     // 连接注册为新事件 (EV_PERSIST为事件触发后不默认删除) 
     struct event *pEvRead; 
     event_set(pEvRead, iCliFd, EV_READ|EV_PERSIST, onRead, pEvRead); 
@@ -90,17 +80,10 @@ void tcp_server()
 		perror("bind error");
 		return;   
 	}
-	if(listen(iSvrFd, 10) == -1)
-	{
-		perror("listen error");
-		return; 
-	}
-	printf("%d\n", iSvrFd);
+	listen(iSvrFd, 10); 
 	// 初始化base 
-	//base = event_base_new(); 
-	base = event_init(); 
+	base = event_base_new(); 
 	struct event evListen; 
-	printf("event_set");
 	// 设置事件 
 	event_set(&evListen, iSvrFd, EV_READ|EV_PERSIST, onAccept, NULL); 
 	// 设置为base事件 
