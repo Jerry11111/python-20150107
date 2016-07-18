@@ -23,9 +23,21 @@ void demo()
     saddr.sin_family = AF_INET;   
     saddr.sin_addr.s_addr = INADDR_ANY;   
     saddr.sin_port = htons(port); 
-    sfd = socket(AF_INET, SOCK_STREAM,0);   
-    bind(sfd,(struct sockaddr *)&saddr, sizeof(saddr));
-    listen(sfd, 10);         
+    if((sfd = socket(AF_INET, SOCK_STREAM,0)) == -1)   
+	{
+		perror("socket error");	
+		return;
+	}
+    if(bind(sfd,(struct sockaddr *)&saddr, sizeof(saddr)) == -1)
+	{
+		perror("bind error");
+		return;
+	}
+    if(listen(sfd, 10) == -1)         
+	{
+		perror("listen error");	
+		return;
+	}
     printf("server start at 8000 ....\n");
     while(1)
     {

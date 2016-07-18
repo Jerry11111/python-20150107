@@ -2,6 +2,8 @@
 #include <string.h> 
 #include <sys/socket.h> 
 #include <netinet/in.h>
+#include <arpa/inet.h>      
+#include <netdb.h> 
 // libevent头文件 
 #include <event.h> 
 // 定时事件回调函数 
@@ -36,6 +38,7 @@ void onRead(int iCliFd, short iEvent, void*arg)
 { 
     int iLen; 
     char buf[1500]; 
+	perror("onRead error");
 	printf("onRead");
     if((iLen = recv(iCliFd, buf, 1500, 0)) == -1)
 	{
@@ -57,6 +60,7 @@ void onRead(int iCliFd, short iEvent, void*arg)
 void onAccept(int iSvrFd, short iEvent, void*arg) 
 { 
     int iCliFd; 
+	perror("onAccept error");
 	printf("onAccept");
     struct sockaddr_in sCliAddr; 
     socklen_t iSinSize = sizeof(sCliAddr); 
@@ -65,9 +69,12 @@ void onAccept(int iSvrFd, short iEvent, void*arg)
 		perror("accept error");
 		return; 
 	}
+	perror("accept error");
     // 连接注册为新事件 (EV_PERSIST为事件触发后不默认删除) 
     struct event *pEvRead; 
-    event_set(pEvRead, iCliFd, EV_READ|EV_PERSIST, onRead, pEvRead); 
+    //event_set(pEvRead, iCliFd, EV_READ|EV_PERSIST, onRead, pEvRead); 
+    event_set(pEvRead, iCliFd, EV_READ|EV_PERSIST, onRead, NULL); 
+	perror("event_set error");
     event_base_set(base, pEvRead); 
     event_add(pEvRead, NULL); 
 } 
@@ -97,10 +104,11 @@ void tcp_server()
 	}
 	printf("%d\n", iSvrFd);
 	// 初始化base 
-	//base = event_base_new(); 
-	base = event_init(); 
-	struct event evListen; 
+	base = event_base_new(); 
+	//base = event_init(); 
+	perror("event_init error");
 	printf("event_set");
+	struct event evListen; 
 	// 设置事件 
 	event_set(&evListen, iSvrFd, EV_READ|EV_PERSIST, onAccept, NULL); 
 	// 设置为base事件 
@@ -109,9 +117,11 @@ void tcp_server()
 	event_add(&evListen, NULL); 
 	// 事件循环 
 	event_base_dispatch(base); 	
+	perror("event_base_dispatch");
 }
 int main(int argc, char **argv) 
 { 
-	tcp_server();
+	//tcp_server();
+	timer();
     return 0; 
 }
