@@ -1,7 +1,12 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+void slist_test()
+{
 
+
+
+}
 int main(int argc, char **argv)
 {
 	#define SLIST_HEAD(name, type)	\
