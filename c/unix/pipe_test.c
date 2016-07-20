@@ -1,4 +1,7 @@
 #include "header.h"
+#include <pthread.h>
+#include <unistd.h>
+#include <string.h>
 
 // 父进程写, 子进程读
 void pipe1()
@@ -114,10 +117,77 @@ void fifo1()
 		fifo_write();	
 	}
 }
+void * r_thread(void *arg)
+{
+	int fd = *((int *)arg);
+	char buf[2014];
+	size_t len = 0;
+	printf("r_thread start\n");
+	while(1)
+	{
+		if((len = read(fd, buf,1024)) == -1)
+		{
+			perror("read error");
+			return;
+		}
+		printf("read [%s]\n", buf);
+		sleep(1);
+	}
+}
+void *  w_thread(void *arg)
+{
+	int fd = *((int *)arg);
+	char buf[2014] = "hello world!";
+	size_t len = 0;
+	printf("w_thread start\n");
+	while(1)
+	{
+		if((len = write(fd, buf,strlen(buf))) == -1)
+		{
+			perror("write error");
+			return;
+		}
+		printf("write [%s]\n", buf);
+		sleep(1);
+	}
+}
+void * test_thread()
+{
+	printf("test thread\n");
+}
+void thread_pipe_test()
+{
+	int fd[2];
+	if(pipe(fd) == -1)
+	{
+		perror("pipe error");
+		return;
+	}
+	printf("%d %d\n", fd[0], fd[1]);
+	pthread_t rtid, wtid, ttid;
+	int rid, wid;
+	if((rid = pthread_create(&rtid, NULL, r_thread, (void *)&fd[0])) != 0)
+	{
+		perror("create read thread error");
+	}
+	if((wid = pthread_create(&wtid, NULL, w_thread, (void *)&fd[1])) != 0)
+	{
+		perror("create write thread error");
+	}
+	if((wid = pthread_create(&ttid, NULL, test_thread, NULL)) != 0)
+	{
+		perror("create test thread error");
+	}
+	//printf("%d %d\n", rid, wid);
+	printf("%lx %lx\n", rtid, wtid);
+	sleep(10000);
+	printf("end");
+}
 int main(int argc, char** argv)
 {
 	//printf("Hello World!");
 	//pipe2();
 	//fork1();
-	fifo1();
+	//fifo1();
+	thread_pipe_test();
 }
