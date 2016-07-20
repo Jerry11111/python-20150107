@@ -1,7 +1,7 @@
 #include "header.h"
 #include <pthread.h>
 #include <errno.h>
-#include<stdlib.h>
+#include <stdlib.h>
 void printids(const char *s)
 {
 	pid_t  pid;
@@ -84,8 +84,47 @@ void thread_lock()
 		//printf("can’t lock mutex again: %s\n", msg);
 		printf("can’t lock mutex again: %d\n", err);
 }
+pthread_mutex_t mutex ;  
+void *print_msg(void *arg){  
+	int i=0;  
+	pthread_mutex_lock(&mutex);  
+	pthread_t tid = pthread_self(); 
+	for(i=0;i<15;i++){  
+			printf("[%lx] %d\n",(unsigned long)tid, i);  
+			usleep(100);  
+	}  
+	pthread_mutex_unlock(&mutex);  
+}  
+void pthread_mutex_test(){  
+	pthread_t id1;  
+	pthread_t id2;  
+	pthread_mutex_init(&mutex,NULL);  
+	pthread_create(&id1,NULL,print_msg,NULL);  
+	pthread_create(&id2,NULL,print_msg,NULL);  
+	pthread_join(id1,NULL);  
+	pthread_join(id2,NULL);  
+	pthread_mutex_destroy(&mutex);  
+}
+void *print_msg2(void *arg){  
+	int i=0;  
+	pthread_t tid = pthread_self(); 
+	for(i=0;i<15;i++){  
+			printf("[%lx] %d\n",(unsigned long)tid, i);  
+			usleep(100);  
+	}  
+}  
+void pthread_mutex_test2(){  
+	pthread_t id1;  
+	pthread_t id2;  
+	pthread_create(&id1,NULL,print_msg2,NULL);  
+	pthread_create(&id2,NULL,print_msg2,NULL);  
+	pthread_join(id1,NULL);  
+	pthread_join(id2,NULL);  
+}
 int main(int argc, char **argv)
 {
-	thread_lock();
+	//thread_lock();
+	pthread_mutex_test2();
+	//create_thread();
 	return 0;
 }
