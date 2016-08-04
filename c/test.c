@@ -48,6 +48,7 @@ void test_struct()
 	printf("[%d | %s | %d | %ld]\n", user1.id, user1.username, user1.status, user1.birth);// 没有初始化, 都是确定的值
 	struct User user2 = {1, "root", 0, 123456};// 执行初始化, 无法以这样的形式赋值
 	printf("[%d | %s | %d | %ld]\n", user2.id, user2.username, user2.status, user2.birth);// 没有初始化, 都是确定的值
+	printf("%ld\n", sizeof(struct User));
 	//printf("%d\n", user2.id);
 }
 void test_time()
@@ -63,7 +64,7 @@ int main(int argc, char **argv)
 	//simple_va_fun(100); 
 	//simple_va_fun(100, 200); 
 	//simple_va_fun2("[%d %s]", 100, "hello world"); 
-	//test_struct();
-	test_time();
+	test_struct();
+	//test_time();
 	return 0;
 }

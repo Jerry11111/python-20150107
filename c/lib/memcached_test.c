@@ -3,8 +3,9 @@
 #include "string.h"
 #include "libmemcached/memcached.h"
 //gcc -o cc cc.c  -L /usr/local/lib -lmemcached
-int main(int argc, char *argv[])
+void test1()
 {
+
 	printf("memcache test");
 	memcached_st *memc;
 	memcached_return rc;
@@ -61,5 +62,42 @@ int main(int argc, char *argv[])
 	}
 	//free
 	memcached_free(memc);
+
+}
+void test2()
+{
+
+	 //memcached_servers_parse (char *server_strings); 
+  memcached_server_st *servers = NULL;
+  memcached_st *memc;
+  memcached_return rc;
+  char *key= "keystring";
+  char *value= "keyvalue";
+  memc= memcached_create(NULL);
+  servers= memcached_server_list_append(servers, "localhost", 11211, &rc);   
+  rc= memcached_server_push(memc, servers);
+
+  if (rc == MEMCACHED_SUCCESS)
+    fprintf(stderr,"Added server successfully\n");   
+  else
+    fprintf(stderr,"Couldn't add server: %s\n",memcached_strerror(memc, rc));
+
+  rc= memcached_set(memc, key, strlen(key), value, strlen(value), (time_t)0, (uint32_t)0);
+
+  if (rc == MEMCACHED_SUCCESS)
+    fprintf(stderr,"Key stored successfully\n");   
+  else
+    fprintf(stderr,"Couldn't store key: %s\n",memcached_strerror(memc, rc));
+  char *new_value = NULL;
+  size_t len = 0;
+  new_value =  memcached_get(memc, key, strlen(key),&len,(uint32_t)0, &rc); 
+  if(new_value != NULL)
+  {
+	printf("value: %s %ld\n", new_value, len);
+  }
+}
+int main(int argc, char *argv[])
+{
+	test2();
 	return 0;
 }
