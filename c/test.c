@@ -46,8 +46,15 @@ void test_struct()
 	printf("[%d | %s | %d | %ld]\n", user1.id, user1.username, user1.status, user1.birth);// 没有初始化, 都是确定的值
 	bzero(&user1, sizeof(user1));// 执行初始化
 	printf("[%d | %s | %d | %ld]\n", user1.id, user1.username, user1.status, user1.birth);// 没有初始化, 都是确定的值
-	struct User user2 = {1, "root", 0, 123456};// 执行初始化, 无法以这样的形式赋值
+	struct User user2 = {1, "root", 0, 123456};// 执行初始化
 	printf("[%d | %s | %d | %ld]\n", user2.id, user2.username, user2.status, user2.birth);// 没有初始化, 都是确定的值
+	struct User user3 ={
+		.id = 2,
+		.username = "root2",
+		.status = 2,
+		.birth = 2,
+	};
+	printf("[%d | %s | %d | %ld]\n", user3.id, user3.username, user3.status, user3.birth);// 没有初始化, 都是确定的值
 	printf("%ld\n", sizeof(struct User));
 	//printf("%d\n", user2.id);
 }
