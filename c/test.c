@@ -58,6 +58,37 @@ void test_struct()
 	printf("%ld\n", sizeof(struct User));
 	//printf("%d\n", user2.id);
 }
+void test_union()
+{
+	// 如果struct中union不存在变量名称, 引用为.a
+	// 如果struct中union存在变量名称, 那么引用的时候要加上这个名称, .data.a, 而不能是.a
+	struct User{
+		int id;
+		union{
+			int a;
+			int b;
+		};
+	} user = {
+		.id = 1,
+		.a = 2,
+		.b = 3,
+	};
+	printf("%d %d %d\n", user.id, user.a, user.b);
+	struct User2{
+		int id;
+		union Data{
+			int a;
+			int b;
+		}data;
+	} user2 = {
+		.id = 1,
+		.data.a = 2,
+		.data.b = 3,
+	};
+	//printf("%d %d %d\n", user2.id, user2.a, user2.b);// 错误
+	printf("%d %d %d\n", user2.id, user2.data.a, user2.data.b);
+
+}
 void test_time()
 {
 	struct timeval tv;
@@ -71,7 +102,8 @@ int main(int argc, char **argv)
 	//simple_va_fun(100); 
 	//simple_va_fun(100, 200); 
 	//simple_va_fun2("[%d %s]", 100, "hello world"); 
-	test_struct();
+	//test_struct();
+	test_union();
 	//test_time();
 	return 0;
 }
