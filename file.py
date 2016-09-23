@@ -11,4 +11,4 @@ def file_op():
     url = 'http://i.imgur.com/ZaTRsYLb.jpg'
     name = os.path.basename(url)
     print (name)
-file_op()
+#file_op()
