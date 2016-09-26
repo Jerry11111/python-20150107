@@ -1,5 +1,6 @@
 #coding=utf-8
 import datetime
+import urllib.request
 def test_print():
 	print("hello world!")
 	print(None);
@@ -28,15 +29,14 @@ def test_if():
 	print(x)
 def test_list():
 	lt = [123, 'spam', 1.23]
-	print(len(lt))
+	ltlen = len(lt)
+	lt0 = lt[0]
+	lt[1] = 'abc'
+	lt.pop(2)#删除第二个元素
 	lt.append('ab');
-	print(lt[3])
-	lt[3] = 'abc'
-	#lt.pop(3)
-	print(lt)
+	print("%d %d %s"%(ltlen, lt0, lt))
 	for x in lt:
 		print(x, end = ' ')
-#test_list()
 def test_tuple():
 	tp = (123, 'spam', 1.23)
 	print(len(tp))
@@ -45,6 +45,16 @@ def test_tuple():
 	for x in tp:
 		print(x, end = ' ')
 #test_tuple()
+def test_dict():
+	# 构造dict
+	a = dict(one=1, two=2, three=3)
+	b = b = {'one': 1, 'two': 2, 'three': 3}
+	print("%s %s"%(a, b))
+	a0 = a["one"]
+	alen = len(a)
+	a["one"] = 5
+	del a["three"]
+	print("%d %d %s"%(a0, alen, a))
 def test_time():
 	#计算今天的时间
 	today = datetime.date.today()
@@ -67,4 +77,11 @@ def test_file():
     # write
     #wfo.write(nt)
     #print(open('/home/xiayiguo/ip.txt', "r").read())
-test_file()
+def test_urllib_request():
+	resp = urllib.request.urlopen("http://www.baidu.com")
+	data = resp.read() #字节
+	str1 = str(data, 'utf-8')
+	status = resp.status
+	reason = resp.reason
+	print("%d %s %s %s %s"%(status, reason, type(resp), type(data), type(str1)))
+test_urllib_request()
