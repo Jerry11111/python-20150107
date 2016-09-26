@@ -46,10 +46,48 @@ void test_struct()
 	printf("[%d | %s | %d | %ld]\n", user1.id, user1.username, user1.status, user1.birth);// 没有初始化, 都是确定的值
 	bzero(&user1, sizeof(user1));// 执行初始化
 	printf("[%d | %s | %d | %ld]\n", user1.id, user1.username, user1.status, user1.birth);// 没有初始化, 都是确定的值
-	struct User user2 = {1, "root", 0, 123456};// 执行初始化, 无法以这样的形式赋值
+	struct User user2 = {1, "root", 0, 123456};// 执行初始化
 	printf("[%d | %s | %d | %ld]\n", user2.id, user2.username, user2.status, user2.birth);// 没有初始化, 都是确定的值
+	struct User user3 ={
+		.id = 2,
+		.username = "root2",
+		.status = 2,
+		.birth = 2,
+	};
+	printf("[%d | %s | %d | %ld]\n", user3.id, user3.username, user3.status, user3.birth);// 没有初始化, 都是确定的值
 	printf("%ld\n", sizeof(struct User));
 	//printf("%d\n", user2.id);
+}
+void test_union()
+{
+	// 如果struct中union不存在变量名称, 引用为.a
+	// 如果struct中union存在变量名称, 那么引用的时候要加上这个名称, .data.a, 而不能是.a
+	struct User{
+		int id;
+		union{
+			int a;
+			int b;
+		};
+	} user = {
+		.id = 1,
+		.a = 2,
+		.b = 3,
+	};
+	printf("%d %d %d\n", user.id, user.a, user.b);
+	struct User2{
+		int id;
+		union Data{
+			int a;
+			int b;
+		}data;
+	} user2 = {
+		.id = 1,
+		.data.a = 2,
+		.data.b = 3,
+	};
+	//printf("%d %d %d\n", user2.id, user2.a, user2.b);// 错误
+	printf("%d %d %d\n", user2.id, user2.data.a, user2.data.b);
+
 }
 void test_time()
 {
@@ -64,7 +102,8 @@ int main(int argc, char **argv)
 	//simple_va_fun(100); 
 	//simple_va_fun(100, 200); 
 	//simple_va_fun2("[%d %s]", 100, "hello world"); 
-	test_struct();
+	//test_struct();
+	test_union();
 	//test_time();
 	return 0;
 }
