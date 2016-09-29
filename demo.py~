@@ -85,34 +85,4 @@ def test_urllib_request():
 	status = resp.status
 	reason = resp.reason
 	print("%d %s %s %s %s"%(status, reason, type(resp), type(data), type(str1)))
-def test_range():
-	# 打印0 1 2 3 4
-	for i in range(0, 5):
-		print(i)
-	# 打印0 2 4
-	for i in range(0, 5, 2):
-		print(i)
-def test_json():
-	obj = [[1,2,3],123,123.123,'abc',{'key1':(1,2,3),'key2':(4,5,6)}]
-	encodedjson = json.dumps(obj)
-	print(repr(obj))
-	print(encodedjson)
-	jstr = '''{
-	"appid": "9013441301020150326103320124400",
-	"consumecode": "160420527578",
-	"cpid": "86009182",
-	"fid": "22744",
-	"hret": "0",
-	"orderid": "000000000000000000007214",
-	"ordertime": "20160912191825",
-	"payfee": 1900,
-	"paytype": "2",
-	"signMsg": "24487fabc2694bf1f40f637300f091e6",
-	"status": "00000"
-	}'''
-	print(jstr)
-	o = json.loads(jstr)# json转化为dic
-	print("%s %s"%(o, type(o)))
-	str2 = json.dumps(o)# dic转化为json字符串
-	print("%s %s"%(str2, type(str2)))
 test_urllib_request()

@@ -76,11 +76,10 @@ def test_op():
 	browser = Browser("chrome")#模拟浏览器
 	#browser = Browser()#模拟浏览器
 	browser.visit("http://unptest.xiaobalei.com:5288/gbpayserver/mgr/")#访问指定URL
+	#time.sleep(8)
 	browser.fill("name", "root")
 	browser.fill("pwd", "111111")
 	browser.find_by_value("登陆")[0].click()
 	browser.find_by_text("计费应用管理").click()
-	time.sleep(8)
-	browser.quit()
 
 test_op()
