@@ -4,7 +4,8 @@
 
 JNIEXPORT void JNICALL Java_com_java_base_native1_HelloWorld_hello
   (JNIEnv *, jclass, jstring){
-	  printf("Hello world!\n");
+	  printf("Hello world2!\n");
+	  printf("java => c++!\n");
 	  return;
 }
 int main(){
