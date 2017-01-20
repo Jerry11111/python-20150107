@@ -26,6 +26,18 @@ def string_op():
 	# byte to string
 	t_string2 = str(t_byte, 'utf-8')
 	print (t_string2, type(t_string2))
+def byte_op():
+	# 在 Python 中创建字节与字符串类似，只不过需要在引号外面加一个前缀b
+	print(b"Python")
+	# 单独取出一个字节，它仍然是一个数字
+	print(b"Python"[0])
+	arr = bytes('\xff\xff\xff\xff\xff\xff' + '\x08\x00\x27\xbd\xf9\x51\x08\x06', 'iso8859-1')
+	arr = b'\xff\xff\xff\xff\xff\xff\x08\x00\x27\xbd\xf9\x51\x08\x06'
+	print(arr)
+	b = [0xff, 0xfb];
+	print(b, type(b))
+	for e in arr:
+		print(hex(e), end = '')
 def dictionary_op():
 	t_dic = {'id': 1, 'username': 'admin'}
 	t_dic['data'] = '2015-01-13'
@@ -44,7 +56,4 @@ def test_op():
 	for fruit in fruits:        # Second Example
 	   print ('Current fruit :', fruit)
 	
-#test_op()
-#list_op()
-string_op()
-#dictionary_op()
+byte_op()
