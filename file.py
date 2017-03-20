@@ -12,8 +12,6 @@ def file_op():
     name = os.path.basename(url)
     print (name)
 #file_op()
-<<<<<<< HEAD
-=======
 def op():
 	print ("hello world!")
 	rfo = open('/home/xiayiguo/ip.txt', "r")
@@ -25,5 +23,23 @@ def op():
 	# write
 	wfo.write(nt)
 	print(open('/home/xiayiguo/ip.txt', "r").read())
-op()
->>>>>>> 82e222a433887da579971adf05516be19e26beb8
+def f_read():
+	print("read");
+	infd = open('/home/xiayiguo/ip.txt', "r")
+	# read
+	data = infd.read()
+	infd.close()
+	print(type(data))
+	print(data)
+def f_write():
+	print("write");
+	nt = "hell world";
+	wfo = open('/home/xiayiguo/ip.txt', "w+")
+	# write
+	wfo.write(nt)
+	wfo.close()
+	print(open('/home/xiayiguo/ip.txt', "r").read())
+def p_exec():
+	os.system('ls -l')# 无返回结果
+	print(os.popen('ls -l ').read())# 有返回结果
+p_exec()
