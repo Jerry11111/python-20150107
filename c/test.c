@@ -95,6 +95,8 @@ void test_time()
 	struct timezone tz;
 	int res = gettimeofday(&tv, &tz);// 获取当前时间, 秒数
 	printf("%d %ld %ld\n", res, tv.tv_sec, tv.tv_usec);
+	time_t tm = time(NULL);
+	printf("%ld\n", tm);
 	//gettimeofday
 }
 int main(int argc, char **argv)
@@ -103,7 +105,7 @@ int main(int argc, char **argv)
 	//simple_va_fun(100, 200); 
 	//simple_va_fun2("[%d %s]", 100, "hello world"); 
 	//test_struct();
-	test_union();
-	//test_time();
+//	test_union();
+	test_time();
 	return 0;
 }
