@@ -36,4 +36,19 @@ def test_xml(){
 	assert list.technology.name == 'Groovy'
 	println "${list} ${list.class} ${list['technology']}"
 }
-test_xml()
+def test_file(){
+	println new File("/etc/passwd").text 
+	def dir = new File(".")  
+	if (dir.isDirectory()) {  
+		dir.eachFileRecurse { file ->  
+			println file  
+		}  
+	} 
+	new File("test.txt").withPrintWriter { printWriter ->  
+    	printWriter.println('The first content of file')  
+    	printWriter.println('The second content of file')  
+    	printWriter.println('The third content of file')  
+	} 
+	println new File("test.txt").text 
+}
+test_file()
