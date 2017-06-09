@@ -17,37 +17,37 @@ void demo()
     int sfd;
     int cfd;
     char buf[MAX_LINE];     
-    int port = 8000;
+    int port = 9999;
     int read_len;
     bzero((void *)&saddr, sizeof(saddr));
     saddr.sin_family = AF_INET;   
     saddr.sin_addr.s_addr = INADDR_ANY;   
     saddr.sin_port = htons(port); 
     if((sfd = socket(AF_INET, SOCK_STREAM,0)) == -1)   
-	{
-		perror("socket error");	
-		return;
-	}
+    {
+	perror("socket error");	
+	return;
+    }
     if(bind(sfd,(struct sockaddr *)&saddr, sizeof(saddr)) == -1)
-	{
-		perror("bind error");
-		return;
-	}
+    {
+	perror("bind error");
+	return;
+    }
     if(listen(sfd, 10) == -1)         
-	{
-		perror("listen error");	
-		return;
-	}
-    printf("server start at 8000 ....\n");
+    {
+	perror("listen error");	
+	return;
+    }
+    printf("server start at %d ....\n", port);
     while(1)
     {
         cfd = accept(sfd, (struct sockaddr *)&caddr, &caddr_len);
-		if(cfd < 0)
-		{
-			perror("accept error");
-			exit(0);
-		}
-        read_len = read(cfd,buf,MAX_LINE);    
+	if(cfd < 0)
+	{
+	    perror("accept error");
+	    exit(1);
+	}
+        read_len = read(cfd, buf, MAX_LINE);    
         printf("%s\n", buf);   
         write(cfd, buf, read_len);          
         close(cfd);
@@ -61,6 +61,6 @@ void demo()
 }
 int main(int argc,char **argv)
 {
-	demo();
+    demo();
     return 0;
 }
