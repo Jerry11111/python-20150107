@@ -1,5 +1,10 @@
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
+import groovyx.net.http.HTTPBuilder
+import groovyx.net.http.ContentType
+import groovyx.net.http.Method
+import groovyx.net.http.RESTClient
+import groovyx.net.http.HttpResponseDecorator
 def test(){
 	def x = 1..10
 	println x
@@ -51,4 +56,28 @@ def test_file(){
 	} 
 	println new File("test.txt").text 
 }
-test_file()
+def test_closure(){
+	log = ''
+	(1..10).each{ counter -> log += counter}
+	assert log == '1234567891' // assert 失败才会打印
+	log = ''
+	(1..10).each{log += it}
+	assert log == '12345678910' 
+	
+}
+def test_http(){
+	def http = new HTTPBuilder('http://www.google.com.hk')  
+	http.request(GET, TEXT) {  
+	    uri.path="/search"  
+	    uri.query = [q:'groovy']  
+	  
+	  
+	    response.success ={resp,reader->  
+		println resp.statusLine.statusCode  
+		println resp.headers.'content-length'  
+		System.out << reader  
+	    }  
+	    response.failure={resp-> println resp.status }  
+	} 	
+}
+test_http()
