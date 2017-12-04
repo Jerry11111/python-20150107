@@ -25,21 +25,21 @@ def op():
 	print(open('/home/xiayiguo/ip.txt', "r").read())
 def f_read():
 	print("read");
-	infd = open('/home/xiayiguo/ip.txt', "r")
+	fd = open('/home/xiayiguo/ip.txt', "r")
 	# read
-	data = infd.read()
-	infd.close()
-	print(type(data))
-	print(data)
+	str_data = fd.read()
+	fd.close()
+	print(type(str_data))
+	print(str_data)
 def f_write():
 	print("write");
-	nt = "hell world";
-	wfo = open('/home/xiayiguo/ip.txt', "w+")
+	str_word = "hell world";
+	fd = open('/home/xiayiguo/ip.txt', "w+") #r只读，w可写，a追加 
 	# write
-	wfo.write(nt)
-	wfo.close()
+	fd.write(str_word)
+	fd.close()
 	print(open('/home/xiayiguo/ip.txt', "r").read())
 def p_exec():
 	os.system('ls -l')# 无返回结果
 	print(os.popen('ls -l ').read())# 有返回结果
-p_exec()
+f_write()
