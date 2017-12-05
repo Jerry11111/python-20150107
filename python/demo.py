@@ -6,7 +6,9 @@ def test_print():
 	print(None);
 	print(1, 2, 3, "a", "b", "c")# 1 2 3 a b c
 	# sep指定分隔符默认为空格, end指定换行符默认为\n
-	print(1, 2, 3, "a", "b", "c", sep = ",", end = "")# 1,2,3,a,b,c
+	print(1, 2, 3, "a", "b", "c",sep=",", end="\n")# 1,2,3,a,b,c
+	print("%d %s" %(123456,"myblog"))#输出123456 myblog
+	print("{}{}{}".format("spkk",".","cn"))#输出spkk.cn
 def test_type():
 	f = isinstance("str", str);# 判断对象是否是后面类型的实例
 	print(f)
@@ -115,4 +117,4 @@ def test_json():
 	print("%s %s"%(o, type(o)))
 	str2 = json.dumps(o)# dic转化为json字符串
 	print("%s %s"%(str2, type(str2)))
-test_urllib_request()
+test_print()
