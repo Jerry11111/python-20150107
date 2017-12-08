@@ -16,13 +16,17 @@ def list_op():
 
 def string_op():
 	t_string = '123'
-	print (t_string, type(t_string))
+	print (t_string, type(t_string)) # 123 <class 'str'>
 	# string to byte
 	t_array = bytearray(t_string,'utf-8')
-	print (t_array, type(t_array))
+	print (t_array, type(t_array))# bytearray(b'123') <class 'bytearray'>
 	t_byte = bytes(t_string, 'utf-8')
-	print (t_byte, type(t_byte))
-	print (t_array == t_byte)
+	print (t_byte, type(t_byte)) # b'123' <class 'bytes'>
+	t_b = t_string.encode() # b'123' <class 'bytes'>
+	print(t_b, type(t_b)) # 
+	t_str = t_b.decode()
+	print(t_str, type(t_str)) # 123 <class 'str'>
+	print (t_array == t_byte)# True
 	# byte to string
 	t_string2 = str(t_byte, 'utf-8')
 	print (t_string2, type(t_string2))
@@ -56,4 +60,4 @@ def test_op():
 	for fruit in fruits:        # Second Example
 	   print ('Current fruit :', fruit)
 	
-byte_op()
+string_op()
